@@ -49,7 +49,7 @@ void draw_character(int x, int y, char use);
 
 void add();
 
-void mov(char movee);
+void mov(int movee);
 
 void main()
 {
@@ -99,7 +99,9 @@ void main()
         {
             dir = 4;
         }
+		mov(dir);
     }
+	endwin();
 }
 
 //initialize the environment of the game
@@ -178,7 +180,7 @@ void draw_character(int x, int y, char use)
 //    }
 //}
 
-void mov(char movee)
+void mov(int movee)
 {
     node * p = head;
     while(p->next != NULL){
@@ -196,23 +198,24 @@ void mov(char movee)
     
     switch(movee)
     {
-        case 'u':
+        case 1:
             
             head->row = head->row +1; //add if contraints
             break;
+        case 2:
+            head->col = head->col - 1; //add if contraints
+            break;
             
-        case 'd':
+        case 3:
             
             head->row = head->row - 1; //add if contraints
             break;
             
-        case 'r':
-            head->col = head->col ; //add if contraints
+        case 4:
+            head->col = head->col+1 ; //add if contraints
             break;
             
-        case 'l':
-            head->col = head->col - 1; //add if contraints
-            break;
+
     }
     
 }
@@ -240,18 +243,15 @@ void add()
     
 }
 
-void
-
 void startSnake(){
     size=1;
     head = (node*)malloc(sizeof(node));
     head->data = SNAKEBODYPART;
     head->next = NULL;
     head->prev = NULL;
-    head->row = 0;
-    head->col = 0;
+    head->row = ROWS/2;
+    head->col = COLUMNS/2;
     graph[head->row][head->col]= head->data;
-    
+    draw_character(head->row, head->col, head->data);
+
 }
-
-
