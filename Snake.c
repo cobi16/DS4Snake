@@ -57,7 +57,10 @@ void main()
     int left = 0;
     int down = 0;
     int right = 0;
-    
+	int time=0;
+	int oldTime=0;
+    int dir = 1;
+	
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -70,11 +73,15 @@ void main()
     //generate a piece of food on at a random spot on the map
     makeFood();
     
+	scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, &right);
+
+	
+	
     while(TRUE)
     {
-        int dir = 0;
+        
         //scan for dpad input
-        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
+        scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
         
         //if up is pressed, return 1
         if(up == 1)
@@ -99,7 +106,11 @@ void main()
         {
             dir = 4;
         }
-		mov(dir);
+		
+		if(time-oldTime >= 100){
+			mov(dir);
+			oldTime=time;
+		}
     }
 	endwin();
 }
@@ -182,19 +193,14 @@ void draw_character(int x, int y, char use)
 
 void mov(int movee)
 {
-    node * p = head;
-    while(p->next != NULL){
-        p= p->next;
-    }
-    
-    // might have to move while loop
-    while(p->prev != head){
-        p->row = p->prev->row;
-        p->col = p->prev ->col;
-        p= p->prev;
-    }
-    p->row = head->row;
-    p->col = head->col;
+
+
+	node * p = head;
+	node * temp =(node*)malloc(sizeof(node));
+	temp->row = p->row;
+	temp->col = p->col;
+
+
     
     switch(movee)
     {
@@ -217,7 +223,29 @@ void mov(int movee)
             
 
     }
+	draw_character(head->row, head->col, head->data);
     
+
+
+    while(p->next != NULL){
+		
+		
+		p= p->next;	
+		
+		int r = temp->row;
+		int c = temp->col;
+		
+		temp->row = p->row;
+		temp->col = p->col;
+		
+		p->row = r;
+		p->col = c;
+		
+        
+    }
+	
+	draw_character(temp->row, temp->col, EMPTY_SPACE);
+	
 }
 
 void add()
