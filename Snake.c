@@ -52,6 +52,8 @@ void add();
 
 void mov(int movee);
 
+void isEaten();
+
 void main()
 {
     int up = 0;
@@ -207,7 +209,7 @@ void mov(int movee)
     {
         case 1:
             
-            head->row = head->row +1; //add if contraints
+            head->row = head->row -1; //add if contraints
             break;
         case 2:
             head->col = head->col - 1; //add if contraints
@@ -215,7 +217,7 @@ void mov(int movee)
             
         case 3:
             
-            head->row = head->row - 1; //add if contraints
+            head->row = head->row + 1; //add if contraints
             break;
             
         case 4:
@@ -224,7 +226,7 @@ void mov(int movee)
             
             
     }
-    draw_character(head->row, head->col, head->data);
+    draw_character(head->col,head->row, head->data);
     
     
     
@@ -245,8 +247,9 @@ void mov(int movee)
         
     }
     
-    draw_character(temp->row, temp->col, EMPTY_SPACE);
+    draw_character(temp->col,temp->row, EMPTY_SPACE);
     
+	isEaten();
 }
 
 void add()
@@ -281,12 +284,10 @@ void startSnake() {
     draw_character(head->row, head->col, head->data);
 }
 
-bool isEaten()
+void isEaten()
 {
     if(graph[head->row][head->col] == FOOD)
     {
         add();
-        return true;
     }
-    return false;
 }
