@@ -87,25 +87,25 @@ void main()
         scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
         
         //if up is pressed, return 1
-        if(up == 1)
+        if(up == 1 && dir != 3)
         {
             dir = 1;
         }
         
         //if left is pressed, return 2
-        else if(left == 1)
+        else if(left == 1 && dir != 4)
         {
             dir = 2;
         }
         
         //if down is pressed, return 3
-        else if(down == 1)
+        else if(down == 1 && dir != 1)
         {
             dir = 3;
         }
         
         //if right is pressed, return 4
-        else if(right == 1)
+        else if(right == 1 && dir != 2)
         {
             dir = 4;
         }
@@ -286,8 +286,9 @@ void startSnake() {
 
 void isEaten()
 {
-    if(graph[head->row][head->col] == FOOD)
+    if(graph[head->col][head->row] == FOOD)
     {
         add();
+		makeFood();
     }
 }
