@@ -8,6 +8,8 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <ncurses/ncurses.h>
+
 
 //CONSTANTS
 #define EMPTY_SPACE ' '
@@ -19,21 +21,38 @@
 //VARIABLES
 int size;
 int graph[COLUMNS][ROWS];
-char snake[COLUMNS][ROWS];
 char* ptr;
 
 //PROTOTYPES
 
-//create a graph with a value of 1 in each spot, so they are not null
-void createGraph();
-
 void startSnake();
+
+//initialize the environment of the game
+void startEnvironment();
+
+//make a piece of food spawn in a random spot on the gameboard
+void makeFood();
+
+//Draw character to the screen
+//position is (x,y)
+void draw_character(int x, int y, char use);
 
 void main
 {
-    OOOOOOOOO
-    **********
+    char dir;
     
+    //Setup screen for ncurses
+    initscr();
+    refresh();
+    
+    //make the map
+    startEnvironment();
+    
+    
+    startSnake();
+    
+    //generate a piece of food on at a random spot on the map
+    makeFood();
 }
 
 //initialize the environment of the game
@@ -75,33 +94,10 @@ void draw_character(int x, int y, char use)
 
 void startSnake()
 {
-    int size = 3;
-    int i = 0;
-    snake[0][size - 1] = 2;
-    ptr = &snake[0][size - 1];
-    for(i=0; i<size-2; i++){
-        snake[0][i]=1;
-    }
+    draw_character(COLUMNS / 2, ROWS / 2, SNAKEBODYPART);
 }
 
-void mov(char movee)
-{
-    switch(movee)
-    {
-        case 'u':
-    }
-    
-}
-
-void add(int num)
-{
-    size+= num;
-}
-
-int isEaten(){
-    if(
-        }
-        
+//read an input from the dualshock dpad
 char direction()
 {
     int up = 0;
@@ -117,25 +113,25 @@ char direction()
         //if up is pressed, return u
         if(up == 1)
         {
-            return u;
+            return 'u';
         }
         
         //if left is pressed, return l
         else if(left == 1)
         {
-            return l;
+            return 'l';
         }
         
         //if down is pressed, return d
         else if(down == 1)
         {
-            return d;
+            return 'd';
         }
         
         //if right is pressed, return r
         else if(right == 1)
         {
-            return r;
+            return 'r';
         }
     }
 }
