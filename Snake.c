@@ -13,6 +13,7 @@
 
 
 //CONSTANTS
+#define BOUNDARY '$'
 #define EMPTY_SPACE ' '
 #define FOOD 'O'
 #define SNAKEBODYPART '*'
@@ -32,6 +33,7 @@ typedef struct node{
 int size;
 char graph[COLUMNS][ROWS];
 char* ptr;
+int score;
 node * head; // add head node
 
 //PROTOTYPES
@@ -78,8 +80,6 @@ void main()
     
     scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, &right);
     
-    
-    
     while(TRUE)
     {
         
@@ -113,6 +113,7 @@ void main()
         if(time-oldTime >= 100){
             mov(dir);
             oldTime=time;
+            
         }
     }
     endwin();
@@ -123,6 +124,8 @@ void startEnvironment()
 {
     int i = 0;
     int j = 0;
+    int k = 0;
+    int l = 0;
     
     //loop through and make every spot on our gameboard an empty space
     for(i = 0; i < COLUMNS; i++)
@@ -131,6 +134,19 @@ void startEnvironment()
         {
             draw_character(i, j, EMPTY_SPACE);
         }
+    }
+    
+    //make outer edge the boundary
+    for(k = 0; k < COLUMNS; k++)
+    {
+        draw_character(COLUMNS, k, BOUNDARY);
+        graph[COLUMNS][k] = BOUNDARY;
+    }
+    
+    for(l = 0; l < ROWS; l++)
+    {
+        draw_character(l, ROWS, BOUNDARY);
+        graph[l][ROWS] = BOUNDARY;
     }
 }
 
@@ -231,9 +247,9 @@ void mov(int movee)
             
             
     }
-	
+    
     draw_character(head->col,head->row, head->data);
-	
+    
     
     
     
@@ -255,7 +271,7 @@ void mov(int movee)
     }
     isEaten();
     draw_character(temp->col,temp->row, EMPTY_SPACE);
-	graph[temp->col][temp->row] = EMPTY_SPACE;
+    graph[temp->col][temp->row] = EMPTY_SPACE;
     graph[head->col][head->row]= SNAKEBODYPART;
 }
 
@@ -297,5 +313,6 @@ void isEaten()
     {
         add();
         makeFood();
+        score = score + 100;
     }
 }
