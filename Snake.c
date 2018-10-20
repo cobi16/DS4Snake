@@ -15,13 +15,15 @@
 #define EMPTY_SPACE ' '
 #define FOOD 'O'
 #define SNAKEBODYPART '*'
-#define COLUMNS 100
-#define ROWS 100
+#define COLUMNS 25
+#define ROWS 25
+#define TRUE 1
 
 //VARIABLES
 int size;
 int graph[COLUMNS][ROWS];
 char* ptr;
+node* head; // add head node
 
 //PROTOTYPES
 
@@ -37,7 +39,7 @@ void makeFood();
 //position is (x,y)
 void draw_character(int x, int y, char use);
 
-void main
+void main()
 {
     char dir;
     
@@ -108,7 +110,7 @@ char direction()
     while(TRUE)
     {
         //scan for dpad input
-        scanf("%d, %d, %d, %d", &up, &left, &down, &right)
+        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
         
         //if up is pressed, return u
         if(up == 1)
@@ -135,4 +137,85 @@ char direction()
         }
     }
 }
-       
+
+void mov(char movee)
+{
+    node * p = head;
+    while(p->next != null){
+        p= p->next;
+    }
+    
+    // might have to move while loop
+    while(p->prev != head){
+        p->row = p->prev->row;
+        p->col = p->pre ->col;
+        p= p->prev;
+    }
+    p->row = head->row;
+    p->col = head->col;
+    
+    switch(movee)
+    {
+        case 'u':
+            
+            head->row = head->row +1; //add if contraints
+            break;
+            
+        case 'd':
+            
+            head->row = head->row - 1; //add if contraints
+            break;
+            
+        case 'r':
+            head->col = head->col ; //add if contraints
+            break;
+            
+        case 'l':
+            head->col = head->col - 1; //add if contraints
+            break;
+    }
+    
+}
+
+void add()
+{
+    size++;
+    node * temp = null;
+    node * p = null;
+    temp= (node*)malloc(sizeof(node));
+    temp->data = SNAKEBODYPART;
+    
+    
+    p=head;
+    while(p->next !=null)
+        p=p->next;
+    p->next = temp;
+    
+    temp->next = null;
+    temp->prev = p;
+    temp->col = null;
+    tmep->row = null;
+    
+    
+    
+}
+
+void startSnake(){
+    size=1;
+    head = (node*)malloc(sizeof(node));
+    head->data = SNAKEBODYPART;
+    head->next = null;
+    head->prev = null;
+    head->row = 0;
+    head->col = 0;
+    graph[head->row][head->col]= head->data;
+    
+}
+
+typedef struct node{
+    char data;
+    struct node * next;
+    struct node * prev;
+    int row;
+    int col;
+}node;
