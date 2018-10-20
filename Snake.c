@@ -64,7 +64,7 @@ void main()
     int time=0;
     int oldTime=0;
     int dir = 1;
-	
+    
     
     //Setup screen for ncurses
     initscr();
@@ -114,9 +114,9 @@ void main()
         
         if(time-oldTime >= 100){
             mov(dir);
-			if(endGame==1){
-				printf("game over");
-			}
+            if(endGame==1){
+                printf("game over");
+            }
             oldTime=time;
         }
     }
@@ -128,8 +128,8 @@ void startEnvironment()
 {
     int i = 0;
     int j = 0;
-	int k = 0;
-	int l = 0;
+    int k = 0;
+    int l = 0;
     
     //loop through and make every spot on our gameboard an empty space
     for(i = 0; i < COLUMNS; i++)
@@ -139,21 +139,24 @@ void startEnvironment()
             draw_character(i, j, EMPTY_SPACE);
         }
     }
-	
-	//make outer edge the boundary
+    
+    //make outer edge the boundary
     for(k = 0; k < COLUMNS; k++)
     {
-        draw_character(COLUMNS, k, BOUNDARY);
-        graph[COLUMNS][k] = BOUNDARY;
+        draw_character(COLUMNS, k, SNAKEBODYPART);
+        draw_character(ROWS, k, SNAKEBODYPART)
+        graph[COLUMNS][k] = SNAKEBODYPART;
+        graph[ROWS][k] = SNAKEBODYPART;
     }
     
     for(l = 0; l < ROWS; l++)
     {
-        draw_character(l, ROWS, BOUNDARY);
-        graph[l][ROWS] = BOUNDARY;
+        draw_character(l, ROWS, SNAKEBODYPART);
+        draw_character(l, COLUMNS, SNAKEBODYPART)
+        graph[l][ROWS] = SNAKEBODYPART;
+        graph[l][COLUMNS] = SNAKEBODYPART;
     }
-
-
+    
 }
 
 //make a piece of food spawn in a random spot on the gameboard
@@ -237,35 +240,35 @@ void mov(int movee)
         case 1:
             
             head->row = head->row -1; //add if contraints
-/* 			if( graph[head->col][head->row] = SNAKEBODYPART || head->row<0 )
-				endGame = 1;	 */
+            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->row<0 )
+             endGame = 1;     */
             break;
         case 2:
             head->col = head->col - 1; //add if contraints
-/* 			if( graph[head->col][head->row] = SNAKEBODYPART || head->col < 0 )
-				endGame = 1;	 */		
+            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->col < 0 )
+             endGame = 1;     */
             break;
             
         case 3:
             
             head->row = head->row + 1; //add if contraints
-/* 			if( graph[head->col][head->row] = SNAKEBODYPART || head->row > ROWS )
-				endGame = 1; */			
+            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->row > ROWS )
+             endGame = 1; */
             break;
             
         case 4:
             head->col = head->col+1 ; //add if contraints
-/* 			if( graph[head->col][head->row] = SNAKEBODYPART || head->col > COLUMNS )
-				endGame = 1;	 */
+            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->col > COLUMNS )
+             endGame = 1;     */
             break;
             
             
     }
-	
-	if(endGame==1)
-		return;
+    
+    if(endGame==1)
+        return;
     draw_character(head->col,head->row, head->data);
-	
+    
     
     
     
@@ -287,7 +290,7 @@ void mov(int movee)
     }
     isEaten();
     draw_character(temp->col,temp->row, EMPTY_SPACE);
-	graph[temp->col][temp->row] = EMPTY_SPACE;
+    graph[temp->col][temp->row] = EMPTY_SPACE;
     graph[head->col][head->row]= SNAKEBODYPART;
 }
 
