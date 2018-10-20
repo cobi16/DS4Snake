@@ -53,6 +53,11 @@ void mov(char movee);
 
 void main()
 {
+    int up = 0;
+    int left = 0;
+    int down = 0;
+    int right = 0;
+    
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -67,8 +72,33 @@ void main()
     
     while(TRUE)
     {
-        char dir = direction();
-        mov(dir);
+        int dir = 0;
+        //scan for dpad input
+        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
+        
+        //if up is pressed, return 1
+        if(up == 1)
+        {
+            dir = 1;
+        }
+        
+        //if left is pressed, return 2
+        else if(left == 1)
+        {
+            dir = 2;
+        }
+        
+        //if down is pressed, return 3
+        else if(down == 1)
+        {
+            dir = 3;
+        }
+        
+        //if right is pressed, return 4
+        else if(right == 1)
+        {
+            dir = 4;
+        }
     }
 }
 
@@ -92,12 +122,12 @@ void startEnvironment()
 void makeFood()
 {
     srand(time(NULL));
-    
-    //generate random number between 3-97
-    int randVert = rand() % (98 - 3) + 3;
-    int randHori = rand() % (98 - 3) + 3;
+    //generate random number between 3-22
+    int randVert = rand() % (23 - 3) + 3;
+    int randHori = rand() % (23 - 3) + 3;
     
     //value at random location is now a piece of food
+    graph[randVert][randHori] = FOOD;
     draw_character(randVert, randHori, FOOD);
 }
 
@@ -110,54 +140,53 @@ void draw_character(int x, int y, char use)
 }
 
 //read an input from the dualshock dpad
-char direction()
-{
-    int up = 0;
-    int left = 0;
-    int down = 0;
-    int right = 0;
-    
-    while(TRUE)
-    {
-        //scan for dpad input
-        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
-        
-        //if up is pressed, return u
-        if(up == 1)
-        {
-            return 'u';
-        }
-        
-        //if left is pressed, return l
-        else if(left == 1)
-        {
-            return 'l';
-        }
-        
-        //if down is pressed, return d
-        else if(down == 1)
-        {
-            return 'd';
-        }
-        
-        //if right is pressed, return r
-        else if(right == 1)
-        {
-            return 'r';
-        }
-    }
-}
+//char direction()
+//{
+//    int up = 0;
+//    int left = 0;
+//    int down = 0;
+//    int right = 0;
+//
+//    while(TRUE)
+//    {
+//        //scan for dpad input
+//        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
+//
+//        //if up is pressed, return u
+//        if(up == 1)
+//        {
+//            return 'u';
+//        }
+//
+//        //if left is pressed, return l
+//        else if(left == 1)
+//        {
+//            return 'l';
+//        }
+//
+//        //if down is pressed, return d
+//        else if(down == 1)
+//        {
+//            return 'd';
+//        }
+//
+//        //if right is pressed, return r
+//        else if(right == 1)
+//        {
+//            return 'r';
+//        }
+//    }
+//}
 
-void mov(char movee)
+void mov(int movee)
 {
     node * p = head;
     while(p->next != NULL){
         p= p->next;
     }
-    graph[p->row][p->col] =EMPTY_SPACE;
+    
     // might have to move while loop
     while(p->prev != head){
-		
         p->row = p->prev->row;
         p->col = p->prev ->col;
         p= p->prev;
@@ -167,26 +196,25 @@ void mov(char movee)
     
     switch(movee)
     {
-        case 'u':
+        case 1:
             
             head->row = head->row +1; //add if contraints
             break;
+        case 2:
+            head->col = head->col - 1; //add if contraints
+            break;
             
-        case 'd':
+        case 3:
             
             head->row = head->row - 1; //add if contraints
             break;
             
-        case 'r':
-            head->col = head->col ; //add if contraints
+        case 4:
+            head->col = head->col+1 ; //add if contraints
             break;
             
-        case 'l':
-            head->col = head->col - 1; //add if contraints
-            break;
+
     }
-	
-	graph[head->row][head->col] = SNAKEBODYPART;
     
 }
 
@@ -213,15 +241,18 @@ void add()
     
 }
 
+void
+
 void startSnake(){
     size=1;
     head = (node*)malloc(sizeof(node));
     head->data = SNAKEBODYPART;
     head->next = NULL;
     head->prev = NULL;
-    head->row = 0;
-    head->col = 0;
+    head->row = ROWS/2;
+    head->col = COLUMNS/2;
     graph[head->row][head->col]= head->data;
-    
+    draw_character(head->row, head->col, head->data);
+
 }
 
