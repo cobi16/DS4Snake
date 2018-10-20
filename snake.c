@@ -78,9 +78,39 @@ void draw_character(int x, int y, char use)
 
 void mov(char movee)
 {
+	node * p = head;
+	while(p->next != null){
+		p= p->next;
+	}
+	
+	// might have to move while loop
+	while(p->prev != head){
+		p->row = p->prev->row;
+		p->col = p->pre ->col;
+		p= p->prev;
+	}
+	p->row = head->row;
+	p->col = head->col;	
+	
     switch(movee)
     {
         case 'u':
+
+		head->row = head->row +1; //add if contraints
+		break;
+		
+		case 'd':
+
+		head->row = head->row - 1; //add if contraints		
+		break;
+		
+		case 'r':
+		head->col = head->col ; //add if contraints
+		break;
+		
+		case 'l':
+		head->col = head->col - 1; //add if contraints
+		break;
     }
     
 }
@@ -101,7 +131,8 @@ void add()
 	
 	temp->next = null;
 	temp->prev = p;
-	temp->
+	temp->col = null;
+	tmep->row = null;
 		
 	
 	
@@ -126,25 +157,25 @@ char direction()
         //if up is pressed, return u
         if(up == 1)
         {
-            return u;
+            return 'u';
         }
         
         //if left is pressed, return l
         else if(left == 1)
         {
-            return l;
+            return 'l';
         }
         
         //if down is pressed, return d
         else if(down == 1)
         {
-            return d;
+            return 'd';
         }
         
         //if right is pressed, return r
         else if(right == 1)
         {
-            return r;
+            return 'r';
         }
     }
 }
