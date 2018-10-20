@@ -53,6 +53,11 @@ void mov(char movee);
 
 void main()
 {
+    int up = 0;
+    int left = 0;
+    int down = 0;
+    int right = 0;
+    
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -67,9 +72,33 @@ void main()
     
     while(TRUE)
     {
-        char dir = direction();
-        printf("dir: %c", &dir);
-        mov(dir);
+        int dir = 0;
+        //scan for dpad input
+        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
+        
+        //if up is pressed, return 1
+        if(up == 1)
+        {
+            dir = 1;
+        }
+        
+        //if left is pressed, return 2
+        else if(left == 1)
+        {
+            dir = 2;
+        }
+        
+        //if down is pressed, return 3
+        else if(down == 1)
+        {
+            dir = 3;
+        }
+        
+        //if right is pressed, return 4
+        else if(right == 1)
+        {
+            dir = 4;
+        }
     }
 }
 
@@ -111,43 +140,43 @@ void draw_character(int x, int y, char use)
 }
 
 //read an input from the dualshock dpad
-char direction()
-{
-    int up = 0;
-    int left = 0;
-    int down = 0;
-    int right = 0;
-    
-    while(TRUE)
-    {
-        //scan for dpad input
-        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
-        
-        //if up is pressed, return u
-        if(up == 1)
-        {
-            return 'u';
-        }
-        
-        //if left is pressed, return l
-        else if(left == 1)
-        {
-            return 'l';
-        }
-        
-        //if down is pressed, return d
-        else if(down == 1)
-        {
-            return 'd';
-        }
-        
-        //if right is pressed, return r
-        else if(right == 1)
-        {
-            return 'r';
-        }
-    }
-}
+//char direction()
+//{
+//    int up = 0;
+//    int left = 0;
+//    int down = 0;
+//    int right = 0;
+//
+//    while(TRUE)
+//    {
+//        //scan for dpad input
+//        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
+//
+//        //if up is pressed, return u
+//        if(up == 1)
+//        {
+//            return 'u';
+//        }
+//
+//        //if left is pressed, return l
+//        else if(left == 1)
+//        {
+//            return 'l';
+//        }
+//
+//        //if down is pressed, return d
+//        else if(down == 1)
+//        {
+//            return 'd';
+//        }
+//
+//        //if right is pressed, return r
+//        else if(right == 1)
+//        {
+//            return 'r';
+//        }
+//    }
+//}
 
 void mov(char movee)
 {
