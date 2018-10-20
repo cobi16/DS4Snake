@@ -6,32 +6,75 @@
 //  Copyright © 2018 Cobi Mom. All rights reserved.
 //
 
-
-
-#include "Snake.h"
 #include <stdlib.h>
+#include <time.h>
 
+//CONSTANTS
+#define EMPTY_SPACE ' '
+#define FOOD 'O'
+#define SNAKEBODYPART '*'
+#define COLUMNS 100
+#define ROWS 100
+
+//VARIABLES
 int size;
-char graph[100][100];
-char snake[100][100];
+int graph[COLUMNS][ROWS];
+char snake[COLUMNS][ROWS];
 char* ptr;
 
-void creatGraph()
+//PROTOTYPES
+
+//create a graph with a value of 1 in each spot, so they are not null
+void createGraph();
+
+void startSnake();
+
+void main
 {
-    int i=0;
-    int j=0;
+    OOOOOOOOO
+    **********
     
-    for(i=0; i<100; i++)
+}
+
+//initialize the environment of the game
+void startEnvironment()
+{
+    int i = 0;
+    int j = 0;
+    
+    //loop through and make every spot on our gameboard an empty space
+    for(i = 0; i < COLUMNS; i++)
     {
-        for(j=0; j<100; j++)
+        for(j = 0; j < ROWS; j++)
         {
-            graph[i][j] = 1;
+            draw_character(i, j, EMPTY_SPACE);
         }
     }
 }
 
+//make a piece of food spawn in a random spot on the gameboard
+void makeFood()
+{
+    srand(time(NULL));
+    
+    //generate random number between 3-97
+    int randVert = rand() % (98 - 3) + 3;
+    int randHori = rand() % (98 - 3) + 3;
+    
+    //value at random location is now a piece of food
+    draw_character(randVert, randHori, FOOD);
+}
 
-void startSnake(){
+//Draw character to the screen
+//position is (x,y)
+void draw_character(int x, int y, char use)
+{
+    mvaddch(y, x, use);
+    refresh();
+}
+
+void startSnake()
+{
     int size = 3;
     int i = 0;
     snake[0][size - 1] = 2;
@@ -50,7 +93,8 @@ void mov(char movee)
     
 }
 
-void add(int num){
+void add(int num)
+{
     size+= num;
 }
 
@@ -96,14 +140,3 @@ char direction()
     }
 }
        
-void makeFood()
-{
-    srand(time(NULL));
-    
-    //generate random number between 3-97
-    int randVert = rand() % (98 - 3) + 3;
-    int randHori = rand() % (98 - 3) + 3;
-    
-    //value at random location is now 2(a piece of food)
-    graph[randVert][randHori] = 2;
-}
