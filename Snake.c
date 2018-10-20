@@ -143,6 +143,11 @@ void makeFood()
     int randHori = rand() % (23 - 3) + 3;
     
     //value at random location is now a piece of food
+    while(graph[randVert][randHori] != SNAKEBODYPART)
+    {
+        randVert = rand() % (23 - 3) + 3;
+        randHori = rand() % (23 - 3) + 3;
+    }
     graph[randVert][randHori] = FOOD;
     draw_character(randVert, randHori, FOOD);
 }
@@ -249,7 +254,7 @@ void mov(int movee)
     
     draw_character(temp->col,temp->row, EMPTY_SPACE);
     
-	isEaten();
+    isEaten();
 }
 
 void add()
@@ -289,6 +294,6 @@ void isEaten()
     if(graph[head->col][head->row] == FOOD)
     {
         add();
-		makeFood();
+        makeFood();
     }
 }
