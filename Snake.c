@@ -29,7 +29,7 @@ typedef struct node{
 
 //VARIABLES
 int size;
-int graph[COLUMNS][ROWS];
+char graph[COLUMNS][ROWS];
 char* ptr;
 node * head; // add head node
 
@@ -68,6 +68,7 @@ void main()
     while(TRUE)
     {
         char dir = direction();
+        printf("dir: %c", &dir);
         mov(dir);
     }
 }
@@ -92,12 +93,12 @@ void startEnvironment()
 void makeFood()
 {
     srand(time(NULL));
-    
-    //generate random number between 3-97
-    int randVert = rand() % (98 - 3) + 3;
-    int randHori = rand() % (98 - 3) + 3;
+    //generate random number between 3-22
+    int randVert = rand() % (23 - 3) + 3;
+    int randHori = rand() % (23 - 3) + 3;
     
     //value at random location is now a piece of food
+    graph[randVert][randHori] = FOOD;
     draw_character(randVert, randHori, FOOD);
 }
 
@@ -209,6 +210,8 @@ void add()
     
     
 }
+
+void
 
 void startSnake(){
     size=1;
