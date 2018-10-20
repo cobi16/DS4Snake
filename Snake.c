@@ -19,11 +19,19 @@
 #define ROWS 25
 #define TRUE 1
 
+typedef struct node{
+    char data;
+    struct node * next;
+    struct node * prev;
+    int row;
+    int col;
+}node;
+
 //VARIABLES
 int size;
 int graph[COLUMNS][ROWS];
 char* ptr;
-node* head; // add head node
+node * head; // add head node
 
 //PROTOTYPES
 
@@ -38,6 +46,13 @@ void makeFood();
 //Draw character to the screen
 //position is (x,y)
 void draw_character(int x, int y, char use);
+
+void add();
+
+void mov(char movee);
+
+
+
 
 void main()
 {
@@ -94,11 +109,6 @@ void draw_character(int x, int y, char use)
     refresh();
 }
 
-void startSnake()
-{
-    draw_character(COLUMNS / 2, ROWS / 2, SNAKEBODYPART);
-}
-
 //read an input from the dualshock dpad
 char direction()
 {
@@ -141,14 +151,14 @@ char direction()
 void mov(char movee)
 {
     node * p = head;
-    while(p->next != null){
+    while(p->next != NULL){
         p= p->next;
     }
     
     // might have to move while loop
     while(p->prev != head){
         p->row = p->prev->row;
-        p->col = p->pre ->col;
+        p->col = p->prev ->col;
         p= p->prev;
     }
     p->row = head->row;
@@ -180,21 +190,21 @@ void mov(char movee)
 void add()
 {
     size++;
-    node * temp = null;
-    node * p = null;
+    node * temp = NULL;
+    node * p = NULL;
     temp= (node*)malloc(sizeof(node));
     temp->data = SNAKEBODYPART;
     
     
     p=head;
-    while(p->next !=null)
+    while(p->next !=NULL)
         p=p->next;
     p->next = temp;
     
-    temp->next = null;
+    temp->next = NULL;
     temp->prev = p;
-    temp->col = null;
-    tmep->row = null;
+    temp->col = NULL;
+    temp->row = NULL;
     
     
     
@@ -204,18 +214,12 @@ void startSnake(){
     size=1;
     head = (node*)malloc(sizeof(node));
     head->data = SNAKEBODYPART;
-    head->next = null;
-    head->prev = null;
+    head->next = NULL;
+    head->prev = NULL;
     head->row = 0;
     head->col = 0;
     graph[head->row][head->col]= head->data;
     
 }
 
-typedef struct node{
-    char data;
-    struct node * next;
-    struct node * prev;
-    int row;
-    int col;
-}node;
+
