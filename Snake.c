@@ -51,13 +51,8 @@ void add();
 
 void mov(char movee);
 
-
-
-
 void main()
 {
-    char dir;
-    
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -65,11 +60,16 @@ void main()
     //make the map
     startEnvironment();
     
-    
     startSnake();
     
     //generate a piece of food on at a random spot on the map
     makeFood();
+    
+    while(TRUE)
+    {
+        char dir = direction();
+        mov(dir);
+    }
 }
 
 //initialize the environment of the game
