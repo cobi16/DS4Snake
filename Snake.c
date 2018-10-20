@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ncurses/ncurses.h>
+#include <stdbool.h>
 
 
 //CONSTANTS
@@ -57,10 +58,10 @@ void main()
     int left = 0;
     int down = 0;
     int right = 0;
-	int time=0;
-	int oldTime=0;
+    int time=0;
+    int oldTime=0;
     int dir = 1;
-	
+    
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -73,10 +74,10 @@ void main()
     //generate a piece of food on at a random spot on the map
     makeFood();
     
-	scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, &right);
-
-	
-	
+    scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, &right);
+    
+    
+    
     while(TRUE)
     {
         
@@ -106,13 +107,13 @@ void main()
         {
             dir = 4;
         }
-		
-		if(time-oldTime >= 100){
-			mov(dir);
-			oldTime=time;
-		}
+        
+        if(time-oldTime >= 100){
+            mov(dir);
+            oldTime=time;
+        }
     }
-	endwin();
+    endwin();
 }
 
 //initialize the environment of the game
@@ -193,14 +194,14 @@ void draw_character(int x, int y, char use)
 
 void mov(int movee)
 {
-
-
-	node * p = head;
-	node * temp =(node*)malloc(sizeof(node));
-	temp->row = p->row;
-	temp->col = p->col;
-
-
+    
+    
+    node * p = head;
+    node * temp =(node*)malloc(sizeof(node));
+    temp->row = p->row;
+    temp->col = p->col;
+    
+    
     
     switch(movee)
     {
@@ -221,31 +222,31 @@ void mov(int movee)
             head->col = head->col+1 ; //add if contraints
             break;
             
-
+            
     }
-	draw_character(head->row, head->col, head->data);
+    draw_character(head->row, head->col, head->data);
     
-
-
+    
+    
     while(p->next != NULL){
-		
-		
-		p= p->next;	
-		
-		int r = temp->row;
-		int c = temp->col;
-		
-		temp->row = p->row;
-		temp->col = p->col;
-		
-		p->row = r;
-		p->col = c;
-		
+        
+        
+        p= p->next;
+        
+        int r = temp->row;
+        int c = temp->col;
+        
+        temp->row = p->row;
+        temp->col = p->col;
+        
+        p->row = r;
+        p->col = c;
+        
         
     }
-	
-	draw_character(temp->row, temp->col, EMPTY_SPACE);
-	
+    
+    draw_character(temp->row, temp->col, EMPTY_SPACE);
+    
 }
 
 void add()
@@ -266,12 +267,9 @@ void add()
     temp->prev = p;
     temp->col = NULL;
     temp->row = NULL;
-    
-    
-    
 }
 
-void startSnake(){
+void startSnake() {
     size=1;
     head = (node*)malloc(sizeof(node));
     head->data = SNAKEBODYPART;
@@ -281,5 +279,14 @@ void startSnake(){
     head->col = COLUMNS/2;
     graph[head->row][head->col]= head->data;
     draw_character(head->row, head->col, head->data);
+}
 
+bool isEaten()
+{
+    if(graph[head->row][head->col] == FOOD)
+    {
+        add();
+        return true;
+    }
+    return false;
 }
