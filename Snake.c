@@ -231,8 +231,9 @@ void mov(int movee)
             
             
     }
-	graph[head->col][head->row]= SNAKEBODYPART;
+	
     draw_character(head->col,head->row, head->data);
+	
     
     
     
@@ -252,11 +253,10 @@ void mov(int movee)
         
         
     }
-    
-	graph[temp->col][temp->row] = EMPTY_SPACE;
-    draw_character(temp->col,temp->row, EMPTY_SPACE);
-    
     isEaten();
+    draw_character(temp->col,temp->row, EMPTY_SPACE);
+	graph[temp->col][temp->row] = EMPTY_SPACE;
+    graph[head->col][head->row]= SNAKEBODYPART;
 }
 
 void add()
