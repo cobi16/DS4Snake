@@ -1,5 +1,3 @@
-
-
 //
 //  Snake.c
 //  Snake
@@ -10,31 +8,68 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <ncurses/ncurses.h>
+
 
 //CONSTANTS
 #define EMPTY_SPACE ' '
 #define FOOD 'O'
 #define SNAKEBODYPART '*'
-#define COLUMNS 100
-#define ROWS 100
+#define COLUMNS 25
+#define ROWS 25
+#define TRUE 1
+
+typedef struct node{
+    char data;
+    struct node * next;
+    struct node * prev;
+    int row;
+    int col;
+}node;
 
 //VARIABLES
 int size;
-int graph[COLUMNS][ROWS];
+char graph[COLUMNS][ROWS];
+char* ptr;
 node * head; // add head node
 
 //PROTOTYPES
 
-//create a graph with a value of 1 in each spot, so they are not null
-void createGraph();
-
 void startSnake();
 
-void main
+//initialize the environment of the game
+void startEnvironment();
+
+//make a piece of food spawn in a random spot on the gameboard
+void makeFood();
+
+//Draw character to the screen
+//position is (x,y)
+void draw_character(int x, int y, char use);
+
+void add();
+
+void mov(char movee);
+
+void main()
 {
-    OOOOOOOOO
-    **********
+    //Setup screen for ncurses
+    initscr();
+    refresh();
     
+    //make the map
+    startEnvironment();
+    
+    startSnake();
+    
+    //generate a piece of food on at a random spot on the map
+    makeFood();
+    
+    while(TRUE)
+    {
+        char dir = direction();
+        mov(dir);
+    }
 }
 
 //initialize the environment of the game
@@ -74,74 +109,7 @@ void draw_character(int x, int y, char use)
     refresh();
 }
 
-
-
-void mov(char movee)
-{
-	node * p = head;
-	while(p->next != null){
-		p= p->next;
-	}
-	
-	// might have to move while loop
-	while(p->prev != head){
-		p->row = p->prev->row;
-		p->col = p->pre ->col;
-		p= p->prev;
-	}
-	p->row = head->row;
-	p->col = head->col;	
-	
-    switch(movee)
-    {
-        case 'u':
-
-		head->row = head->row +1; //add if contraints
-		break;
-		
-		case 'd':
-
-		head->row = head->row - 1; //add if contraints		
-		break;
-		
-		case 'r':
-		head->col = head->col ; //add if contraints
-		break;
-		
-		case 'l':
-		head->col = head->col - 1; //add if contraints
-		break;
-    }
-    
-}
-
-void add()
-{
-    size++;
-	node * temp = null;
-	node * p = null;
-	temp= (node*)malloc(sizeof(node));
-	temp->data = SNAKEBODYPART;
-	
-	
-	p=head;
-	while(p->next !=null)
-		p=p->next;
-	p->next = temp;
-	
-	temp->next = null;
-	temp->prev = p;
-	temp->col = null;
-	tmep->row = null;
-		
-	
-	
-}
-
-int isEaten(){
-    if(
-        }
-        
+//read an input from the dualshock dpad
 char direction()
 {
     int up = 0;
@@ -152,7 +120,7 @@ char direction()
     while(TRUE)
     {
         //scan for dpad input
-        scanf("%d, %d, %d, %d", &up, &left, &down, &right)
+        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
         
         //if up is pressed, return u
         if(up == 1)
@@ -180,24 +148,80 @@ char direction()
     }
 }
 
-
-void startSnake(){
-	size=1;
-	head = (node*)malloc(sizeof(node));
-	head->data = SNAKEBODYPART;
-	head->next = null;
-	head->prev = null;
-	head->row = 0;
-	head->col = 0;
-	graph[head->row][head->col]= head->data;
-
+void mov(char movee)
+{
+    node * p = head;
+    while(p->next != NULL){
+        p= p->next;
+    }
+    graph[p->row][p->col] =EMPTY_SPACE;
+    // might have to move while loop
+    while(p->prev != head){
+		
+        p->row = p->prev->row;
+        p->col = p->prev ->col;
+        p= p->prev;
+    }
+    p->row = head->row;
+    p->col = head->col;
+    
+    switch(movee)
+    {
+        case 'u':
+            
+            head->row = head->row +1; //add if contraints
+            break;
+            
+        case 'd':
+            
+            head->row = head->row - 1; //add if contraints
+            break;
+            
+        case 'r':
+            head->col = head->col ; //add if contraints
+            break;
+            
+        case 'l':
+            head->col = head->col - 1; //add if contraints
+            break;
+    }
+	
+	graph[head->row][head->col] = SNAKEBODYPART;
+    
 }
 
+void add()
+{
+    size++;
+    node * temp = NULL;
+    node * p = NULL;
+    temp= (node*)malloc(sizeof(node));
+    temp->data = SNAKEBODYPART;
+    
+    
+    p=head;
+    while(p->next !=NULL)
+        p=p->next;
+    p->next = temp;
+    
+    temp->next = NULL;
+    temp->prev = p;
+    temp->col = NULL;
+    temp->row = NULL;
+    
+    
+    
+}
 
-typedef struct node{
-	char data;
-	struct node * next;
-	struct node * prev;
-	int row;
-	int col;
-}node;
+void startSnake(){
+    size=1;
+    head = (node*)malloc(sizeof(node));
+    head->data = SNAKEBODYPART;
+    head->next = NULL;
+    head->prev = NULL;
+    head->row = 0;
+    head->col = 0;
+    graph[head->row][head->col]= head->data;
+    
+}
+
