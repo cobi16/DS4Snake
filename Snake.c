@@ -1,10 +1,7 @@
-//
-//  Snake.c
-//  Snake
+//  DS4Snake
 //
 //  Created by Cobi Mom & Ismael Duran on 10/19/18.
 //  Copyright © 2018 Cobi Mom/Ismael Duran. All rights reserved.
-//
 
 #include <stdlib.h>
 #include <time.h>
@@ -12,7 +9,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
 
 //CONSTANTS
 #define EMPTY_SPACE ' '
@@ -37,9 +33,11 @@ char graph[COLUMNS][ROWS];
 char* ptr;
 node * head; // add head node
 char endGame = 0;
+
 //PROTOTYPES
 void updateScore(int num);
 
+//initialize snake
 void startSnake();
 
 //initialize the environment of the game
@@ -52,13 +50,14 @@ void makeFood();
 //position is (x,y)
 void draw_character(int x, int y, char use);
 
+//add length to snake after food is eaten
 void add();
 
-void mov(int movee);
+//move the snake
+void movement(int motion);
 
+//has a piece of food been eaten?
 void isEaten();
-
-void draw_characterInt(int x, int y, int use);
 
 void main()
 {
@@ -70,12 +69,10 @@ void main()
     int oldTime=0;
     int dir = 1;
     
-    
     printf("Press UP to START: " );
     fflush(stdout);
     while(up==0){
         scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
-        
     }
     
     //Setup screen for ncurses
@@ -85,6 +82,7 @@ void main()
     //make the map
     startEnvironment();
     
+    //generate the snake
     startSnake();
     
     //generate a piece of food on at a random spot on the map
@@ -125,8 +123,7 @@ void main()
                 dir = 4;
             }
             
-            
-            mov(dir);
+            movement(dir);
             if(endGame==1){
                 printf("game over");
                 fflush(stdout);
@@ -171,8 +168,6 @@ void startEnvironment()
         graph[0][l] = SNAKEBODYPART;
         graph[COLUMNS-1][l] = SNAKEBODYPART;
     }
-    
-    
 }
 
 //make a piece of food spawn in a random spot on the gameboard
@@ -201,102 +196,48 @@ void draw_character(int x, int y, char use)
     refresh();
 }
 
-void draw_characterInt(int x, int y, int use)
+//move the snake
+void movement(int motion)
 {
-    mvaddch(y, x, use);
-    refresh();
-}
-
-//read an input from the dualshock dpad
-//char direction()
-//{
-//    int up = 0;
-//    int left = 0;
-//    int down = 0;
-//    int right = 0;
-//
-//    while(TRUE)
-//    {
-//        //scan for dpad input
-//        scanf("%d, %d, %d, %d", &up, &left, &down, &right);
-//
-//        //if up is pressed, return u
-//        if(up == 1)
-//        {
-//            return 'u';
-//        }
-//
-//        //if left is pressed, return l
-//        else if(left == 1)
-//        {
-//            return 'l';
-//        }
-//
-//        //if down is pressed, return d
-//        else if(down == 1)
-//        {
-//            return 'd';
-//        }
-//
-//        //if right is pressed, return r
-//        else if(right == 1)
-//        {
-//            return 'r';
-//        }
-//    }
-//}
-
-void mov(int movee)
-{
-    
-    
     node * p = head;
     node * temp =(node*)malloc(sizeof(node));
     temp->row = p->row;
     temp->col = p->col;
     
-    
-    
-    switch(movee)
+    switch(motion)
     {
         case 1:
             
             head->row = head->row -1; //add if contraints
-            if( graph[head->col][head->row] == SNAKEBODYPART || head->row<0 )
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->row<0)
                 endGame = 1;
             break;
         case 2:
             head->col = head->col - 1; //add if contraints
-            if( graph[head->col][head->row] == SNAKEBODYPART || head->col < 0 )
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->col < 0)
                 endGame = 1;
             break;
             
         case 3:
             
             head->row = head->row + 1; //add if contraints
-            if( graph[head->col][head->row] == SNAKEBODYPART || head->row > ROWS )
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->row > ROWS)
                 endGame = 1;
             break;
             
         case 4:
             head->col = head->col+1 ; //add if contraints
-            if( graph[head->col][head->row] == SNAKEBODYPART || head->col > COLUMNS )
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->col > COLUMNS)
                 endGame = 1;
             break;
-            
-            
     }
     
     if(endGame==1)
         return;
     draw_character(head->col,head->row, head->data);
     
-    
-    
-    
     while(p->next != NULL){
-        
-        
+    
         p= p->next;
         
         int r = temp->row;
@@ -307,9 +248,8 @@ void mov(int movee)
         
         p->row = r;
         p->col = c;
-        
-        
     }
+    
     isEaten();
     draw_character(temp->col,temp->row, EMPTY_SPACE);
     graph[temp->col][temp->row] = EMPTY_SPACE;
@@ -323,7 +263,6 @@ void add()
     node * p = NULL;
     temp= (node*)malloc(sizeof(node));
     temp->data = SNAKEBODYPART;
-    
     
     p=head;
     while(p->next !=NULL)
@@ -362,17 +301,10 @@ void isEaten()
 void updateScore(int num){
     
     char str[100];
-    
     sprintf(str, "SCORE: %d", num);
     
     int i=0;
-    int count = 0;
     for(i=0; i<strlen(str); i++){
         draw_character(i, ROWS, str[i]);
     }
-    //draw_characterInt(i, ROWS, num + 48);
-    
-    
-    
-    
 }
