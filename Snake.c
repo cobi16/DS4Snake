@@ -2,8 +2,8 @@
 //  Snake.c
 //  Snake
 //
-//  Created by Cobi Mom on 10/19/18.
-//  Copyright © 2018 Cobi Mom. All rights reserved.
+//  Created by Cobi Mom & Ismael Duran on 10/19/18.
+//  Copyright © 2018 Cobi Mom/Ismael Duran. All rights reserved.
 //
 
 #include <stdlib.h>
@@ -71,13 +71,13 @@ void main()
     int dir = 1;
     
     
-	printf("Press UP to START: " );
-	fflush(stdout);
-	while(up==0){
-		scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
-
-	}
-	
+    printf("Press UP to START: " );
+    fflush(stdout);
+    while(up==0){
+        scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
+        
+    }
+    
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -90,8 +90,8 @@ void main()
     //generate a piece of food on at a random spot on the map
     makeFood();
     
-    scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, 
-	&right);
+    scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down,
+          &right);
     
     updateScore(size-1);
     
@@ -100,39 +100,39 @@ void main()
         
         //scan for dpad input
         scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
-         if(time-oldTime >= 100){
-			//if up is pressed, return 1
-			if(up == 1 && dir != 3)
-			{
-				dir = 1;
-			}
-			
-			//if left is pressed, return 2
-			else if(left == 1 && dir != 4)
-			{
-				dir = 2;
-			}
-			
-			//if down is pressed, return 3
-			else if(down == 1 && dir != 1)
-			{
-				dir = 3;
-			}
-			
-			//if right is pressed, return 4
-			else if(right == 1 && dir != 2)
-			{
-				dir = 4;
-			}
-			
-		   
-				mov(dir);
-				if(endGame==1){
-					printf("game over");
-					fflush(stdout);
-					return;
-				}
-				oldTime=time;
+        if(time-oldTime >= 100){
+            //if up is pressed, return 1
+            if(up == 1 && dir != 3)
+            {
+                dir = 1;
+            }
+            
+            //if left is pressed, return 2
+            else if(left == 1 && dir != 4)
+            {
+                dir = 2;
+            }
+            
+            //if down is pressed, return 3
+            else if(down == 1 && dir != 1)
+            {
+                dir = 3;
+            }
+            
+            //if right is pressed, return 4
+            else if(right == 1 && dir != 2)
+            {
+                dir = 4;
+            }
+            
+            
+            mov(dir);
+            if(endGame==1){
+                printf("game over");
+                fflush(stdout);
+                return;
+            }
+            oldTime=time;
         }
     }
     endwin();
@@ -171,7 +171,7 @@ void startEnvironment()
         graph[0][l] = SNAKEBODYPART;
         graph[COLUMNS-1][l] = SNAKEBODYPART;
     }
-	
+    
     
 }
 
@@ -262,26 +262,26 @@ void mov(int movee)
         case 1:
             
             head->row = head->row -1; //add if contraints
-			if( graph[head->col][head->row] == SNAKEBODYPART || head->row<0 )
-             endGame = 1; 
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->row<0 )
+                endGame = 1;
             break;
         case 2:
             head->col = head->col - 1; //add if contraints
             if( graph[head->col][head->row] == SNAKEBODYPART || head->col < 0 )
-             endGame = 1;     
+                endGame = 1;
             break;
             
         case 3:
             
             head->row = head->row + 1; //add if contraints
-			if( graph[head->col][head->row] == SNAKEBODYPART || head->row > ROWS )
-             endGame = 1; 
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->row > ROWS )
+                endGame = 1;
             break;
             
         case 4:
             head->col = head->col+1 ; //add if contraints
             if( graph[head->col][head->row] == SNAKEBODYPART || head->col > COLUMNS )
-             endGame = 1; 
+                endGame = 1;
             break;
             
             
@@ -334,8 +334,8 @@ void add()
     temp->prev = p;
     temp->col = NULL;
     temp->row = NULL;
-	
-	updateScore(size-1);
+    
+    updateScore(size-1);
 }
 
 void startSnake() {
@@ -360,19 +360,19 @@ void isEaten()
 }
 
 void updateScore(int num){
-	
-	char str[100];
-	
-	sprintf(str, "SCORE: %d", num);
-	
-	int i=0;
-	int count = 0;
-	for(i=0; i<strlen(str); i++){
-		draw_character(i, ROWS, str[i]);
-	}
-			//draw_characterInt(i, ROWS, num + 48);
-	
-
-
-	
+    
+    char str[100];
+    
+    sprintf(str, "SCORE: %d", num);
+    
+    int i=0;
+    int count = 0;
+    for(i=0; i<strlen(str); i++){
+        draw_character(i, ROWS, str[i]);
+    }
+    //draw_characterInt(i, ROWS, num + 48);
+    
+    
+    
+    
 }
