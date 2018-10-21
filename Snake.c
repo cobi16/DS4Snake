@@ -16,8 +16,8 @@
 #define EMPTY_SPACE ' '
 #define FOOD 'O'
 #define SNAKEBODYPART '*'
-#define COLUMNS 25
-#define ROWS 25
+#define COLUMNS 50
+#define ROWS 50
 #define TRUE 1
 #define BOUNDARY '$'
 
@@ -66,6 +66,13 @@ void main()
     int dir = 1;
     
     
+	printf("Press UP to START: " );
+	fflush(stdout);
+	while(up==0){
+		scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
+
+	}
+	
     //Setup screen for ncurses
     initscr();
     refresh();
@@ -78,7 +85,8 @@ void main()
     //generate a piece of food on at a random spot on the map
     makeFood();
     
-    scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, &right);
+    scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, 
+	&right);
     
     
     
@@ -87,37 +95,39 @@ void main()
         
         //scan for dpad input
         scanf("%d, %d, %d, %d, %d", &time, &up, &left, &down, &right);
-        
-        //if up is pressed, return 1
-        if(up == 1 && dir != 3)
-        {
-            dir = 1;
-        }
-        
-        //if left is pressed, return 2
-        else if(left == 1 && dir != 4)
-        {
-            dir = 2;
-        }
-        
-        //if down is pressed, return 3
-        else if(down == 1 && dir != 1)
-        {
-            dir = 3;
-        }
-        
-        //if right is pressed, return 4
-        else if(right == 1 && dir != 2)
-        {
-            dir = 4;
-        }
-        
-        if(time-oldTime >= 100){
-            mov(dir);
-            if(endGame==1){
-                printf("game over");
-            }
-            oldTime=time;
+         if(time-oldTime >= 100){
+			//if up is pressed, return 1
+			if(up == 1 && dir != 3)
+			{
+				dir = 1;
+			}
+			
+			//if left is pressed, return 2
+			else if(left == 1 && dir != 4)
+			{
+				dir = 2;
+			}
+			
+			//if down is pressed, return 3
+			else if(down == 1 && dir != 1)
+			{
+				dir = 3;
+			}
+			
+			//if right is pressed, return 4
+			else if(right == 1 && dir != 2)
+			{
+				dir = 4;
+			}
+			
+		   
+				mov(dir);
+				if(endGame==1){
+					printf("game over");
+					fflush(stdout);
+					return;
+				}
+				oldTime=time;
         }
     }
     endwin();
@@ -143,18 +153,18 @@ void startEnvironment()
     //make outer edge the boundary
     for(k = 0; k < COLUMNS; k++)
     {
-        draw_character(COLUMNS, k, SNAKEBODYPART);
-        draw_character(ROWS, k, SNAKEBODYPART)
-        graph[COLUMNS][k] = SNAKEBODYPART;
-        graph[ROWS][k] = SNAKEBODYPART;
+        draw_character(k, 0, SNAKEBODYPART);
+        draw_character(k, ROWS-1, SNAKEBODYPART);
+        graph[k][0] = SNAKEBODYPART;
+        graph[k][ROWS-1] = SNAKEBODYPART;
     }
     
     for(l = 0; l < ROWS; l++)
     {
-        draw_character(l, ROWS, SNAKEBODYPART);
-        draw_character(l, COLUMNS, SNAKEBODYPART)
-        graph[l][ROWS] = SNAKEBODYPART;
-        graph[l][COLUMNS] = SNAKEBODYPART;
+        draw_character(0, l, SNAKEBODYPART);
+        draw_character(COLUMNS-1, l, SNAKEBODYPART);
+        graph[0][l] = SNAKEBODYPART;
+        graph[COLUMNS-1][l] = SNAKEBODYPART;
     }
     
 }
@@ -240,26 +250,26 @@ void mov(int movee)
         case 1:
             
             head->row = head->row -1; //add if contraints
-            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->row<0 )
-             endGame = 1;     */
+			if( graph[head->col][head->row] == SNAKEBODYPART || head->row<0 )
+             endGame = 1; 
             break;
         case 2:
             head->col = head->col - 1; //add if contraints
-            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->col < 0 )
-             endGame = 1;     */
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->col < 0 )
+             endGame = 1;     
             break;
             
         case 3:
             
             head->row = head->row + 1; //add if contraints
-            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->row > ROWS )
-             endGame = 1; */
+			if( graph[head->col][head->row] == SNAKEBODYPART || head->row > ROWS )
+             endGame = 1; 
             break;
             
         case 4:
             head->col = head->col+1 ; //add if contraints
-            /*             if( graph[head->col][head->row] = SNAKEBODYPART || head->col > COLUMNS )
-             endGame = 1;     */
+            if( graph[head->col][head->row] == SNAKEBODYPART || head->col > COLUMNS )
+             endGame = 1; 
             break;
             
             
