@@ -10,6 +10,8 @@
 #include <time.h>
 #include <ncurses/ncurses.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 
 
 //CONSTANTS
@@ -36,6 +38,7 @@ char* ptr;
 node * head; // add head node
 char endGame = 0;
 //PROTOTYPES
+void updateScore(int num);
 
 void startSnake();
 
@@ -54,6 +57,8 @@ void add();
 void mov(int movee);
 
 void isEaten();
+
+void draw_characterInt(int x, int y, int use);
 
 void main()
 {
@@ -88,7 +93,7 @@ void main()
     scanf("%d, %d, %d, %d, %d", &oldTime, &up, &left, &down, 
 	&right);
     
-    
+    updateScore(size-1);
     
     while(TRUE)
     {
@@ -166,6 +171,7 @@ void startEnvironment()
         graph[0][l] = SNAKEBODYPART;
         graph[COLUMNS-1][l] = SNAKEBODYPART;
     }
+	
     
 }
 
@@ -190,6 +196,12 @@ void makeFood()
 //Draw character to the screen
 //position is (x,y)
 void draw_character(int x, int y, char use)
+{
+    mvaddch(y, x, use);
+    refresh();
+}
+
+void draw_characterInt(int x, int y, int use)
 {
     mvaddch(y, x, use);
     refresh();
@@ -322,6 +334,8 @@ void add()
     temp->prev = p;
     temp->col = NULL;
     temp->row = NULL;
+	
+	updateScore(size-1);
 }
 
 void startSnake() {
@@ -343,4 +357,22 @@ void isEaten()
         add();
         makeFood();
     }
+}
+
+void updateScore(int num){
+	
+	char str[100];
+	
+	sprintf(str, "SCORE: %d", num);
+	
+	int i=0;
+	int count = 0;
+	for(i=0; i<strlen(str); i++){
+		draw_character(i, ROWS, str[i]);
+	}
+			//draw_characterInt(i, ROWS, num + 48);
+	
+
+
+	
 }
