@@ -4,7 +4,7 @@ Must connect a dualshock 4 controller to a windows laptop via bluetooth to play 
 
 To run, download the ds4rd.exe file and the Snake.c file, and place in the same folder.
 
-Compile the Snake.c file in cygwin by using the command 
+Compile the Snake.c file in cygwin or similar terminal by using the command 
 "gcc -o Snake Snake.c -lncurses"
 
 Run the game using the command 
